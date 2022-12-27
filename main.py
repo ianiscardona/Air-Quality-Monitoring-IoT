@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for
 
 import pandas as pd
+import csv
 from matplotlib import pyplot as plt
 
 
@@ -20,9 +21,20 @@ def chatbotPage():
 @app.route("/historypage.html")
 def historyPage():
 
-	data = pd.read_csv("input.csv")
+	# df = [
+	# 	("Jimmy", 10),
+	# 	("Joe", 50),
+	# 	("Jose", 100),
+	# 	("Joey", 80),
+	# 	("Joela", 30),
+	# ]
+	with open('input.csv', newline='') as csvfile:
+		df = list(csv.reader(csvfile))
 
-	return render_template("historypage.html", tables=[data.to_html()], titles=[''])
+	labels = [row[0] for row in df]
+	values = [row[1] for row in df]
+
+	return render_template("historypage.html", labels=labels, values=values)
 
 
 # columns = ["Name", "Marks"]
